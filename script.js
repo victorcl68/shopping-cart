@@ -1,4 +1,3 @@
-// Código quebra com soma de números com decimais ou com fato do preço total ser filho de um elemento total-price
 let total = 0;
 const totalPriceGlobal = document.querySelector('span.total-price');
 
@@ -44,13 +43,13 @@ function createCartItemElement({ sku, name, salePrice }) {
   return listItem;
 }
 
-function somaFunction(eachPrice) {
-  total += eachPrice;
+async function somaFunction(eachPrice) {
+  total += await eachPrice;
   const newPChild = document.createElement('p');
   newPChild.innerText = total;
   if (totalPriceGlobal.childNodes.length === 0) {
   totalPriceGlobal.appendChild(newPChild);
-  } else if (totalPriceGlobal.childNodes.length > 0) {
+  } else {
     const firstChildTotalPrice = totalPriceGlobal.firstElementChild;
     totalPriceGlobal.removeChild(firstChildTotalPrice);
     totalPriceGlobal.appendChild(newPChild);
@@ -67,7 +66,6 @@ const addItemOnCart = (event) => {
       newCartItem.id = `${salePrice}`;
       const olParent = document.querySelector('ol.cart__items');
       olParent.appendChild(newCartItem);
-
       somaFunction(salePrice);
     });
 };
@@ -79,9 +77,7 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
   section.lastChild.addEventListener('click', addItemOnCart);
-
   return section;
 }
 
@@ -105,10 +101,8 @@ window.onload = function onload() {
   });
   const emptyCartButton = document.querySelector('button.empty-cart');
   emptyCartButton.addEventListener('click', clearCart);
-
-  const mySpan = document.querySelector('span.total-price');
-  const myP = document.createElement('p');
-  mySpan.appendChild(myP);
+  const newFirstElementP = document.createElement('p');
+  totalPriceGlobal.appendChild(newFirstElementP);
 };
 
 /* function getSkuFromProductItem(item) {
