@@ -1,3 +1,7 @@
+// Código quebra com soma de números com decimais ou com fato do preço total ser filho de um elemento total-price
+let total = 0;
+const totalPriceGlobal = document.querySelector('span.total-price');
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -12,10 +16,24 @@ function createCustomElement(element, className, innerText) {
   return customElement;
 }
 
+const creatingNewElementP = () => {
+  const newP = document.createElement('p');
+  newP.innerText = total;
+  totalPriceGlobal.appendChild(newP);
+};
+
+const removingElementP = () => {
+  const firstElementSpan = totalPriceGlobal.firstElementChild;
+  totalPriceGlobal.removeChild(firstElementSpan);
+};
+
 function cartItemClickListener(event) {
   const parentClick = event.target.parentNode;
   const childClick = event.target;
   parentClick.removeChild(childClick);
+  total -= event.target.id;
+  removingElementP();
+  creatingNewElementP();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -26,16 +44,31 @@ function createCartItemElement({ sku, name, salePrice }) {
   return listItem;
 }
 
+function somaFunction(eachPrice) {
+  total += eachPrice;
+  const newPChild = document.createElement('p');
+  newPChild.innerText = total;
+  if (totalPriceGlobal.childNodes.length === 0) {
+  totalPriceGlobal.appendChild(newPChild);
+  } else if (totalPriceGlobal.childNodes.length > 0) {
+    const f = totalPriceGlobal.firstElementChild;
+    totalPriceGlobal.removeChild(f);
+    totalPriceGlobal.appendChild(newPChild);
+  }
+}
+
 const addItemOnCart = (event) => {
   const selectedSection = event.target.parentNode;
   const ItemID = selectedSection.firstChild.textContent;
-  console.log(ItemID);
   fetch(`https://api.mercadolibre.com/items/${ItemID}`)
     .then((element) => element.json()).then((json) => {
       const { price: salePrice, title: name, id: sku } = json;
       const newCartItem = createCartItemElement({ sku, name, salePrice });
+      newCartItem.id = `${salePrice}`;
       const olParent = document.querySelector('ol.cart__items');
       olParent.appendChild(newCartItem);
+
+      somaFunction(salePrice);
     });
 };
 
@@ -51,35 +84,15 @@ function createProductItemElement({ sku, name, image }) {
 
   return section;
 }
-/* let total = 0;
-Estava dentro da funcçao createproductitemelement 
-        total += salePrice;
-        const totalPrice = document.querySelector('span.total-price');
-        const newChild = document.createElement('p');
-        newChild.innerText = total;
-        if (totalPrice.childNodes.length === 0) {
-        totalPrice.appendChild(newChild);
-        } else if (totalPrice.childNodes.length > 0) {
-          const f = totalPrice.firstElementChild;
-          totalPrice.removeChild(f);
-          totalPrice.appendChild(newChild);
-        } */
 
 const clearCart = () => {
   const parentOlCart = document.querySelector('ol.cart__items');
   const eachLi = document.querySelectorAll('li.cart__item');
-  eachLi.forEach(() => {
-    parentOlCart.removeChild(parentOlCart.lastChild);
-  });
+  eachLi.forEach(() => parentOlCart.removeChild(parentOlCart.lastChild));
+  removingElementP();
+  total = 0;
+  creatingNewElementP();
 };
-/* Estava dentro da funcçao clearCart 
-const totalp = document.querySelector('span.total-price');
-const fi = totalp.firstElementChild;
-totalp.removeChild(fi);
-total = 0;
-const creat = document.createElement('p');
-creat.innerText = total;
-totalp.appendChild(creat); */
 
 window.onload = function onload() {
   fetch('https://api.mercadolibre.com/sites/MLB/search?q=computador')
