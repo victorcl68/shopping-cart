@@ -51,8 +51,8 @@ function somaFunction(eachPrice) {
   if (totalPriceGlobal.childNodes.length === 0) {
   totalPriceGlobal.appendChild(newPChild);
   } else if (totalPriceGlobal.childNodes.length > 0) {
-    const f = totalPriceGlobal.firstElementChild;
-    totalPriceGlobal.removeChild(f);
+    const firstChildTotalPrice = totalPriceGlobal.firstElementChild;
+    totalPriceGlobal.removeChild(firstChildTotalPrice);
     totalPriceGlobal.appendChild(newPChild);
   }
 }
@@ -91,7 +91,6 @@ const clearCart = () => {
   eachLi.forEach(() => parentOlCart.removeChild(parentOlCart.lastChild));
   removingElementP();
   total = 0;
-  creatingNewElementP();
 };
 
 window.onload = function onload() {
@@ -106,6 +105,10 @@ window.onload = function onload() {
   });
   const emptyCartButton = document.querySelector('button.empty-cart');
   emptyCartButton.addEventListener('click', clearCart);
+
+  const mySpan = document.querySelector('span.total-price');
+  const myP = document.createElement('p');
+  mySpan.appendChild(myP);
 };
 
 /* function getSkuFromProductItem(item) {
