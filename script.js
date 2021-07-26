@@ -104,6 +104,13 @@ const localStorageGetStatus = () => {
   });
 };
 
+function loading() {
+  const classLoading = document.querySelector('.container-loading');
+  classLoading.remove();
+}
+// I had this idea by adapting a code from Lara Capila:
+// https://github.com/tryber/sd-010-b-project-shopping-cart/pull/116
+
 window.onload = function onload() {
   fetch('https://api.mercadolibre.com/sites/MLB/search?q=computador')
   .then((response) => response.json())
@@ -119,6 +126,7 @@ window.onload = function onload() {
   const newFirstElementP = document.createElement('p');
   totalPriceGlobal.appendChild(newFirstElementP);
   localStorageGetStatus();
+  loading();
 };
 
 /* function getSkuFromProductItem(item) {
