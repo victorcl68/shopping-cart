@@ -104,7 +104,7 @@ const localStorageGetStatus = () => {
   });
 };
 
-function loading() {
+function endLoading() {
   const classLoading = document.querySelector('.container-loading');
   classLoading.remove();
 }
@@ -120,13 +120,13 @@ window.onload = function onload() {
     const items = document.querySelector('section.items');
     items.appendChild(productItem);
   });
+  endLoading();
   });
   const emptyCartButton = document.querySelector('button.empty-cart');
   emptyCartButton.addEventListener('click', clearCart);
   const newFirstElementP = document.createElement('p');
   totalPriceGlobal.appendChild(newFirstElementP);
   localStorageGetStatus();
-  loading();
 };
 
 /* function getSkuFromProductItem(item) {
