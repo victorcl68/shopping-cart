@@ -22,14 +22,6 @@ Para iniciar o projeto só é necessário clicar no link: https://victorcl68.git
 
 ---
 
-## Linter
-
-Para garantir a qualidade do código, foi utilizado neste projeto os linters `ESLint` e `StyleLint`.
-Assim o código se manteve alinhado com as boas práticas de desenvolvimento, sendo mais legível
-e de fácil manutenção!
-
----
-
 ## API Shopping Cart
 
 O [manual da API do Mercado Livre](https://developers.mercadolivre.com.br/pt_br/itens-e-buscas) contém muitas informações sobre ela. Utilizaremos alguns dos _endpoints_, e a forma de uso está detalhada no primeiro requisito.
