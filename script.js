@@ -1,6 +1,18 @@
 const totalPriceGlobal = document.querySelector('span.total-price');
 const olCartITemsElement = document.querySelector('ol.cart__items');
-let total = 0;
+let total;
+if (localStorage.length === 0) total = 0;
+ else total = Number(localStorage.getItem('totalPrice'));
+
+function valuesFixeds(element) {
+  const elementToChange = element;
+  const totalFixed = total.toFixed(2).toString();
+  const resultCheck = totalFixed.substring(totalFixed.length - 2);
+  const regex = /.0/i;
+  if (resultCheck === '00') elementToChange.innerText = total.toFixed(0);
+    else if (regex.test(resultCheck)) elementToChange.innerText = total.toFixed(1);
+      else elementToChange.innerText = total.toFixed(2);
+}
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -18,8 +30,9 @@ function createCustomElement(element, className, innerText) {
 
 const creatingNewElementP = () => {
   const newP = document.createElement('p');
-  newP.innerText = total;
+  valuesFixeds(newP);
   totalPriceGlobal.appendChild(newP);
+  localStorage.setItem('totalPrice', newP.innerText);
 };
 
 const removingElementP = () => {
@@ -53,14 +66,15 @@ function createCartItemElement({ sku, name, salePrice }) {
 async function somaFunction(eachPrice) {
   total += await eachPrice;
   const newPChild = document.createElement('p');
-  newPChild.innerText = total;
+  valuesFixeds(newPChild);
   if (totalPriceGlobal.childNodes.length === 0) {
-  totalPriceGlobal.appendChild(newPChild);
+    totalPriceGlobal.appendChild(newPChild);
   } else {
     const firstChildTotalPrice = totalPriceGlobal.firstElementChild;
     totalPriceGlobal.removeChild(firstChildTotalPrice);
     totalPriceGlobal.appendChild(newPChild);
   }
+  localStorage.setItem('totalPrice', newPChild.innerHTML);
 }
 
 const addItemOnCart = (event) => {
@@ -125,6 +139,7 @@ window.onload = function onload() {
   const emptyCartButton = document.querySelector('button.empty-cart');
   emptyCartButton.addEventListener('click', clearCart);
   const newFirstElementP = document.createElement('p');
+  newFirstElementP.innerHTML = localStorage.getItem('totalPrice');
   totalPriceGlobal.appendChild(newFirstElementP);
   localStorageGetStatus();
 };
