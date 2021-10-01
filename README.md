@@ -18,7 +18,7 @@ Nesse projeto foi feito um carrinho de compras totalmente dinâmico, consumindo 
 
 ## Como iniciar o projeto
 
-- Para iniciar o projeto só é necessário clicar no link: https://victorcl68.github.io/to-do-list/ .
+- Para iniciar o projeto só é necessário clicar no link: https://victorcl68.github.io/shopping-cart/ .
 
 ---
 
