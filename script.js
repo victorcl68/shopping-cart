@@ -9,9 +9,9 @@ function valuesFixeds(element) {
   const totalFixed = total.toFixed(2).toString();
   const resultCheck = totalFixed.substring(totalFixed.length - 2);
   const regex = /.0/i;
-  if (resultCheck === '00') elementToChange.innerText = total.toFixed(0);
-    else if (regex.test(resultCheck)) elementToChange.innerText = total.toFixed(1);
-      else elementToChange.innerText = total.toFixed(2);
+  if (resultCheck === '00') elementToChange.innerText = `R$ ${total.toFixed(0)}`;
+    else if (regex.test(resultCheck)) elementToChange.innerText = `R$ ${total.toFixed(1)}`;
+      else elementToChange.innerText = `R$ ${total.toFixed(2)}`;
 }
 
 function createProductImageElement(imageSource) {
@@ -32,7 +32,7 @@ const creatingNewElementP = () => {
   const newP = document.createElement('p');
   valuesFixeds(newP);
   totalPriceGlobal.appendChild(newP);
-  localStorage.setItem('totalPrice', newP.innerText);
+  localStorage.setItem('totalPrice', Number(newP.innerText.split('').splice(3).join('')));
 };
 
 const removingElementP = () => {
@@ -74,7 +74,7 @@ async function somaFunction(eachPrice) {
     totalPriceGlobal.removeChild(firstChildTotalPrice);
     totalPriceGlobal.appendChild(newPChild);
   }
-  localStorage.setItem('totalPrice', newPChild.innerHTML);
+  localStorage.setItem('totalPrice', Number(newPChild.innerText.split('').splice(3).join('')));
 }
 
 const addItemOnCart = (event) => {
@@ -105,7 +105,7 @@ function createProductItemElement({ sku, name, image }) {
 const clearCart = () => {
   const eachLi = document.querySelectorAll('li.cart__item');
   eachLi.forEach(() => olCartITemsElement.removeChild(olCartITemsElement.lastChild));
-  removingElementP();
+  totalPriceGlobal.firstChild.innerHTML = 'R$ 0';
   total = 0;
   localStorage.clear();
 };
@@ -139,7 +139,8 @@ window.onload = function onload() {
   const emptyCartButton = document.querySelector('button.empty-cart');
   emptyCartButton.addEventListener('click', clearCart);
   const newFirstElementP = document.createElement('p');
-  newFirstElementP.innerHTML = localStorage.getItem('totalPrice');
+  if (!localStorage.getItem('totalPrice')) newFirstElementP.innerText = 'R$ 0';
+  else newFirstElementP.innerHTML = `R$ ${localStorage.getItem('totalPrice')}`;
   totalPriceGlobal.appendChild(newFirstElementP);
   localStorageGetStatus();
 };
